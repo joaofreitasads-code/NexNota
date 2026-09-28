@@ -379,6 +379,32 @@ h1,h2,h3{letter-spacing:-.015em}
 @media (max-width:560px){.erow{grid-template-columns:1fr 50px}.erow .en2{grid-column:1/-1;margin-bottom:-6px}
 .sban{padding:20px;gap:14px}.sbi .ico.w{width:52px;height:52px;padding:11px;border-radius:15px}.sbt2 p:last-child{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.sbs{width:100%}.sbs div{flex:1;min-width:0}
 .ringbig{width:120px;height:120px}.ringbig strong{font-size:1.8rem}.hb .btn{flex:1;text-align:center}}
+body.gated .shell{display:none}
+#gate{min-height:100vh;background:#fff}
+.gwrap{display:grid;grid-template-columns:1.05fr 1fr;min-height:100vh}
+.gl{background:linear-gradient(145deg,#0A5F34 0%,#0E7A43 45%,#18A55D 100%);color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.gl::after{content:"";position:absolute;right:-120px;bottom:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+.gbrand{padding:0;margin-bottom:34px}.gbrand .bn{color:#fff;font-size:1.8rem}.gbrand .bb{background:#fff;color:#0E7A43}
+.gl h1{font-size:clamp(1.9rem,3.6vw,2.8rem);line-height:1.12;margin:0 0 14px;color:#fff;max-width:16ch}
+.gl>p{margin:0 0 26px;color:#E6F7EC;font-size:1.05rem;max-width:44ch}
+.gfeat{list-style:none;margin:0;padding:0;display:grid;gap:10px;position:relative;z-index:1}
+.gfeat li{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border-radius:12px;padding:10px 14px;max-width:420px}
+.gfeat b{font-size:1.1rem}
+.gr{display:flex;align-items:center;justify-content:center;padding:40px 24px;background:#F7FBF8}
+.gcard{width:100%;max-width:430px;background:#fff;border:1px solid #E4EEE8;border-radius:22px;padding:32px 30px;box-shadow:0 10px 40px rgba(16,40,28,.08)}
+.gcard h2{margin:0 0 6px;font-size:1.6rem}.gsub{margin:0 0 22px;color:var(--muted)}
+.gcard label{display:block;font-weight:600;font-size:.92rem;margin:14px 0 6px}
+.gcard input{width:100%;font:inherit;font-size:1rem;padding:.8em 1em;border:1.5px solid #D6E4DB;border-radius:12px;background:#fff;color:var(--ink)}
+.gcard input:focus{outline:none;border-color:var(--pen);box-shadow:0 0 0 4px rgba(14,122,67,.12)}
+.gcard input[aria-invalid]{border-color:var(--bad)}
+.gerr{margin:6px 0 0;color:var(--bad);font-size:.85rem;font-weight:600}
+.gbtn{width:100%;margin-top:22px;padding:.9em;font-size:1.02rem}
+.gpriv{margin:16px 0 0;font-size:.8rem;color:var(--muted);line-height:1.5}
+@media (max-width:860px){.gwrap{grid-template-columns:1fr}.gl{padding:34px 22px 30px}.gbrand{margin-bottom:18px}.gfeat{grid-template-columns:1fr 1fr}.gfeat li{font-size:.85rem;padding:8px 10px}.gfeat li:last-child{grid-column:1/-1}.gr{padding:22px 14px 40px}.gcard{padding:24px 20px}}
+.user{display:flex;align-items:center;gap:10px;margin:0 6px 12px;padding:10px 12px;border:1px solid #E4EEE8;border-radius:14px;background:#fff}
+.av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;display:grid;place-items:center;font-weight:700;font-size:.9rem;flex:none}
+.user div{min-width:0;flex:1}.user b{display:block;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.user small{display:block;font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user button{font:inherit;font-size:.78rem;font-weight:600;border:1px solid #DCE8E0;background:#fff;color:var(--muted);border-radius:8px;padding:.3em .6em;cursor:pointer}.user button:hover{color:var(--bad);border-color:var(--bad)}
 </style>
 </head>
 <body>
@@ -861,9 +887,11 @@ biologia:'<path d="M8 40C8 20 20 8 40 8c0 20-12 32-32 32zM8 40L28 20"/>'
 const icon=(id,c="ico")=>`<svg class="${c}" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${ICO[id]||""}</svg>`;
 
 const K="enem2026_apostilas_v1",L="ABCDE";
-let st=null;try{st=JSON.parse(localStorage.getItem(K))}catch(e){}
-if(!st||typeof st!=="object")st={};st.a=st.a||{};st.s=st.s||{};
-function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}try{renderNav()}catch(e){}}
+let USER=null;try{USER=JSON.parse(localStorage.getItem("nexnota_user"))}catch(e){}
+function skey(){return USER&&USER.email?K+":"+USER.email:K}
+function loadSt(){let x=null;try{x=JSON.parse(localStorage.getItem(skey()))}catch(e){}if(!x&&USER){try{x=JSON.parse(localStorage.getItem(K))}catch(e){}}if(!x||typeof x!=="object")x={};x.a=x.a||{};x.s=x.s||{};x.r=x.r||{};x.w=x.w||{};return x}
+let st=loadSt();
+function save(){try{localStorage.setItem(skey(),JSON.stringify(st))}catch(e){}try{renderNav()}catch(e){}}
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const app=$("#app");
@@ -878,7 +906,7 @@ function pts(id){const s=byId(id),x=stats(s);return x.ok*10+(x.r-x.ok)*2+readCou
 function progress(id){const s=byId(id),x=stats(s),tt=s.s.reduce((a,b)=>a+b[2].length,0);return Math.round((readCount(id)/E[id].length*.35+x.r/x.t*.45+tasks(id)/tt*.2)*100)}
 function totals(){let T={xp:0,r:0,t:0,ok:0,pg:0,pt:0,tk:0};D.forEach(s=>{const x=stats(s);T.xp+=pts(s.id);T.r+=x.r;T.t+=x.t;T.ok+=x.ok;T.pg+=readCount(s.id);T.pt+=E[s.id].length;T.tk+=tasks(s.id)});return T}
 function level(xp){const step=120,n=Math.floor(xp/step)+1;return{n,name:LV[Math.min(n-1,LV.length-1)],p:Math.round(xp%step/step*100),left:step-xp%step}}
-function areaEst(ids){let r=0,ok=0;ids.forEach(id=>{const x=stats(byId(id));r+=x.r;ok+=x.ok});return{v:r?Math.round(300+650*ok/r):0,r}}
+function areaEst(ids){let r=0,ok=0;ids.forEach(id=>{const x=stats(byId(id));r+=x.r;ok+=x.ok});return{v:r>=3?Math.round(300+650*ok/r):0,r}}
 function byNext(){const list=D.map(s=>({s,x:stats(s),pr:progress(s.id)}));const wrong=list.filter(o=>o.x.r&&o.x.ok/o.x.r<.6).sort((a,b)=>a.x.ok/a.x.r-b.x.ok/b.x.r)[0];
   if(wrong)return{label:`Reforce ${wrong.s.n}`,why:`Sua taxa de acerto está em ${Math.round(wrong.x.ok/wrong.x.r*100)}%. Revise as páginas ilustradas e refaça as questões erradas.`,href:`#/${wrong.s.id}/estudar/0`,cta:"Revisar agora"};
   const o=list.filter(o=>o.pr<100).sort((a,b)=>b.pr-a.pr||0)[0];if(!o)return null;
@@ -898,6 +926,7 @@ function renderNav(){const n=$("#nav");if(!n)return;const h=location.hash||"#/",
   const L=(href,label,ico,extra="")=>`<a href="${href}" class="nl${(href==="#/"?h==="#/"||h==="":h.startsWith(href))?" on":""}">${ico}<span>${label}</span>${extra}</a>`;
   const I=p=>`<svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
   n.innerHTML=`<a class="brand" href="#/"><span class="bn">NexNota</span><span class="bb">+900</span></a>
+  <div class="user"><span class="av">${esc(initials())}</span><div><b>${esc(USER?USER.nome:"")}</b><small>${esc(USER?USER.email:"")}</small></div><button type="button" id="logout">Sair</button></div>
   <div class="me"><div><b>${T.xp} pts</b><small>Nível ${lv.n}: ${lv.name}</small></div><div class="bar"><i style="width:${lv.p}%"></i></div></div>
   <nav aria-label="Menu principal">
   ${L("#/","Painel",I('<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>'))}
@@ -907,7 +936,7 @@ function renderNav(){const n=$("#nav");if(!n)return;const h=location.hash||"#/",
   ${L("#/estudos","Área de estudos",I('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/>'))}
   ${AREAS.map(([a,ids])=>`<p class="ng">${a}</p>`+ids.map(id=>{const s=byId(id);return L(`#/${id}/`,s.n,icon(id,"ico xs"),`<small>${progress(id)}%</small>`)}).join("")).join("")}
   </nav>`;
-  const tp=$("#tpts");if(tp)tp.innerHTML=`${SI("xp")} ${T.xp} pts`;const tl=$("#tlvl");if(tl)tl.textContent=`Nível ${lv.n}: ${lv.name}`;
+  const lo=$("#logout");if(lo)lo.onclick=logout;const tp=$("#tpts");if(tp)tp.innerHTML=`${SI("xp")} ${T.xp} pts`;const tl=$("#tlvl");if(tl)tl.textContent=`Nível ${lv.n}: ${lv.name}`;
 }
 
 
@@ -1102,19 +1131,19 @@ let homeArea="Todas";
 function greet(){const h=new Date().getHours();return h<12?"Bom dia":h<18?"Boa tarde":"Boa noite"}
 function home(){
   document.title="NexNota +900 | Painel";app.style.removeProperty("--c");
-  const T=totalsX(),lv=level(T.xp),nx=byNext(),acc=T.r?Math.round(T.ok/T.r*100):0,est=T.r?Math.round(300+650*T.ok/T.r):0,today=(new Date().getDay()+6)%7;
+  const T=totalsX(),lv=level(T.xp),nx=byNext(),acc=T.r?Math.round(T.ok/T.r*100):0,est=T.r>=5?Math.round(300+650*T.ok/T.r):0,today=(new Date().getDay()+6)%7;
   const got=BADGES.filter(b=>b[2](T)).length;
   app.innerHTML=`
   <section class="hero2"><div class="hx">
-    <p class="hk">${greet()}, estudante</p>
+    <p class="hk">${greet()}, ${esc(firstName())}</p>
     <h1>Sua jornada rumo à nota +900</h1>
     <p>Estude por imagens, páginas ilustradas e questões comentadas. Cada passo vale pontos e aproxima você da meta.</p>
     <div class="hb"><a class="btn light" href="${nx?nx.href:"#/matematica/imagens"}">${nx?esc(nx.cta):"Começar agora"}</a><a class="btn ghostw" href="#/simulado">Fazer simulado</a></div>
   </div>
-  <div class="hring"><div class="ringbig" style="--v:${est?Math.min(100,est/9):0}"><div><strong>${est||"—"}</strong><span>nota estimada</span></div></div><p>Meta: 900</p></div></section>
+  <div class="hring"><div class="ringbig" style="--v:${est?Math.min(100,est/9):0}"><div><strong>${est||"—"}</strong><span>${est?"nota estimada":"responda 5 questões"}</span></div></div><p>Meta: 900</p></div></section>
 
   <section class="stats4">
-   ${[["xp",`${T.xp}`,"pontos",`Nível ${lv.n}: ${lv.name}`,lv.p],["q",`${T.r}/${T.t}`,"questões respondidas",`${T.ok} acertos`,T.r/T.t*100],["acc",`${acc}%`,"taxa de acerto","meta: 80% ou mais",acc],["pg",`${T.pg}/${T.pt}`,"páginas estudadas",`${T.tk} tarefas do plano`,T.pg/T.pt*100]].map(([k,v,l,sub,pc])=>`<div class="st4"><div class="st4i">${SI(k)}</div><div class="st4b"><strong>${v}</strong><span>${l}</span><div class="bar"><i style="width:${Math.round(pc)}%"></i></div><small>${sub}</small></div></div>`).join("")}
+   ${[["xp",`${T.xp}`,"pontos",`Nível ${lv.n}: ${lv.name}`,lv.p],["q",`${T.r}/${T.t}`,"questões respondidas",`${T.ok} ${T.ok===1?"acerto":"acertos"}`,T.r/T.t*100],["acc",`${acc}%`,"taxa de acerto","meta: 80% ou mais",acc],["pg",`${T.pg}/${T.pt}`,"páginas estudadas",`${T.tk} tarefas do plano`,T.pg/T.pt*100]].map(([k,v,l,sub,pc])=>`<div class="st4"><div class="st4i">${SI(k)}</div><div class="st4b"><strong>${v}</strong><span>${l}</span><div class="bar"><i style="width:${Math.round(pc)}%"></i></div><small>${sub}</small></div></div>`).join("")}
   </section>
 
   <div class="cols">
@@ -1173,8 +1202,39 @@ function initSearch(){const q=$("#q"),r=$("#qr");if(!q)return;
   q.oninput=show;q.onfocus=show;q.onkeydown=e=>{if(e.key==="Enter"){const f=r.querySelector("a");if(f){location.hash=f.getAttribute("href");q.value="";r.hidden=true;q.blur()}}if(e.key==="Escape"){r.hidden=true;q.blur()}};
   r.onclick=e=>{if(e.target.closest("a")){r.hidden=true;q.value=""}};
   document.addEventListener("click",e=>{if(!e.target.closest(".search"))r.hidden=true});}
+/* ===== acesso: nome e e-mail ===== */
+function firstName(){return USER?USER.nome.trim().split(/\s+/)[0]:"estudante"}
+function initials(){if(!USER)return"";const p=USER.nome.trim().split(/\s+/);return((p[0]||"")[0]+((p.length>1?p[p.length-1]:"")[0]||"")).toUpperCase()}
+function showGate(){
+  document.body.classList.add("gated");let g=$("#gate");if(!g){g=document.createElement("div");g.id="gate";document.body.appendChild(g)}
+  const saved=(()=>{try{return JSON.parse(localStorage.getItem("nexnota_last")||"null")}catch(e){return null}})();
+  g.innerHTML=`<div class="gwrap">
+  <section class="gl"><a class="brand gbrand"><span class="bn">NexNota</span><span class="bb">+900</span></a>
+   <h1>Sua jornada rumo à nota +900 começa aqui</h1>
+   <p>Uma plataforma completa para estudar para o ENEM de forma visual e prática.</p>
+   <ul class="gfeat"><li><b>100</b> imagens de estudo e mapas mentais</li><li><b>45</b> páginas ilustradas</li><li><b>88</b> questões com correção na hora</li><li><b>11</b> disciplinas nas 4 áreas do ENEM</li><li>Pontos, níveis, conquistas e plano semanal</li></ul></section>
+  <section class="gr"><form id="gform" class="gcard" novalidate>
+   <h2>Acesse a plataforma</h2><p class="gsub">Informe seu nome completo e seu e-mail para entrar.</p>
+   <label for="gn">Nome completo</label><input id="gn" name="nome" autocomplete="name" placeholder="Ex.: Ana Beatriz Souza" value="${saved?esc(saved.nome):""}">
+   <p class="gerr" id="gen" hidden></p>
+   <label for="ge">E-mail</label><input id="ge" name="email" type="email" autocomplete="email" inputmode="email" placeholder="seuemail@exemplo.com" value="${saved?esc(saved.email):""}">
+   <p class="gerr" id="gee" hidden></p>
+   <button class="btn primary gbtn" type="submit">Entrar na plataforma</button>
+   <p class="gpriv">Seu nome, e-mail e progresso ficam salvos apenas neste navegador. Cada e-mail tem o próprio progresso, então duas pessoas podem usar o mesmo aparelho.</p>
+  </form></section></div>`;
+  const f=$("#gform"),n=$("#gn"),e=$("#ge"),en=$("#gen"),ee=$("#gee");
+  f.onsubmit=ev=>{ev.preventDefault();let ok=true;const nome=n.value.trim().replace(/\s+/g," "),email=e.value.trim().toLowerCase();
+    if(nome.split(" ").length<2||nome.length<5){en.textContent="Digite seu nome completo, com nome e sobrenome.";en.hidden=false;n.setAttribute("aria-invalid","true");ok=false}else{en.hidden=true;n.removeAttribute("aria-invalid")}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ee.textContent="Digite um e-mail válido, como nome@gmail.com.";ee.hidden=false;e.setAttribute("aria-invalid","true");ok=false}else{ee.hidden=true;e.removeAttribute("aria-invalid")}
+    if(!ok){(n.getAttribute("aria-invalid")?n:e).focus();return}
+    USER={nome,email,desde:new Date().toISOString()};try{localStorage.setItem("nexnota_user",JSON.stringify(USER));localStorage.setItem("nexnota_last",JSON.stringify({nome,email}))}catch(x){}
+    st=loadSt();save();g.remove();document.body.classList.remove("gated");if(!location.hash||location.hash==="#")location.hash="#/";route()};
+  setTimeout(()=>(n.value?e:n).focus(),50);
+}
+function logout(){try{localStorage.removeItem("nexnota_user")}catch(e){}USER=null;showGate()}
 
 function route(){
+  if(!USER){showGate();return}
   if(lbClose)lbClose();{const r=$("#qr");if(r)r.hidden=true}document.body.classList.remove("navopen");
   const h=location.hash.replace(/^#\/?/,"").split("/");
   if(!h[0])home();else if(h[0]==="desempenho")desempenho();else if(h[0]==="imagens")galeria();else if(h[0]==="simulado")simulado();else if(h[0]==="estudos")estudos();else subject(h[0],h[1],h[2]);
